@@ -16,7 +16,7 @@ export const getAllAccounts = async (req, res) => {
 export const getAllAccountsByOwnerID = async (req, res) => {
   const { ownerID } = req.body;
   try {
-    const accounts = await Account.find({ _id: ownerID });
+    const accounts = await Account.find({ ownerID: ownerID });
     res.status(200).send(accounts);
   } catch (err) {
     console.log(
