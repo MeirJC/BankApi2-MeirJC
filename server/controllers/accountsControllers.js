@@ -26,7 +26,7 @@ export const getAllAccountsByOwnerID = async (req, res) => {
     res.status(418).send(err);
   }
 };
-//! add account
+//! add an account
 export const addAccount = async (req, res) => {
   try {
     const { body } = req;
