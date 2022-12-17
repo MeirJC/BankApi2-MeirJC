@@ -12,6 +12,20 @@ export const getAllAccounts = async (req, res) => {
     res.status(418).send(err);
   }
 };
+//! get all accounts by ownerID
+export const getAllAccountsByOwnerID = async (req, res) => {
+  const { ownerID } = req.body;
+  try {
+    const accounts = await Account.find({ _id: ownerID });
+    res.status(200).send(accounts);
+  } catch (err) {
+    console.log(
+      "--Error in getAllAccountsByOwnerID in accountsController.js--",
+      err.message
+    );
+    res.status(418).send(err);
+  }
+};
 //! add account
 export const addAccount = async (req, res) => {
   try {

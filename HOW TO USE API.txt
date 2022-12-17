@@ -1,0 +1,18 @@
+//get all accounts
+GET http://localhost:5500/BankApi
+
+// get specific account
+GET http://localhost:5500/BankApi/getaccount
+Body:
+{"id": "639de29ec9a0404b03c76f39"}
+
+// get all accounts by ownerID
+GET http://localhost:5500/BankApi/getallbyowner
+Body:
+{"ownerID": "639de29ec9a0404b03c76f39"}
+
+// add an account
+POST http://localhost:5500/BankApi/add
+Body: 
+{"firstName": "Avi","lastName": "Ron","ownerID": "12321","email": "ab@bd.ef","balance": "0","credit": "5000","isActive": true}
+

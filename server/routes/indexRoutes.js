@@ -3,6 +3,7 @@ import {
   addAccount,
   getAllAccounts,
   getAccountById,
+  getAllAccountsByOwnerID,
   deleteAccount,
   depositToAccount,
   withdrawFromAccount,
@@ -13,6 +14,7 @@ export const indexRouter = Router();
 
 indexRouter.get("/BankApi", getAllAccounts);
 indexRouter.get("/BankApi/getaccount", getAccountById);
+indexRouter.get("/BankApi/getallbyowner", getAllAccountsByOwnerID);
 indexRouter.post("/BankApi/add", addAccount);
 indexRouter.delete("/BankApi/delete", deleteAccount);
 indexRouter.patch("/BankApi/deposit", depositToAccount);
