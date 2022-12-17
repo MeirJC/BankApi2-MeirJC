@@ -26,6 +26,14 @@ Body:
   "isActive": true (default = true)
   }
 
+// update account by id
+POST https://bankapi-2-wa.onrender.com/BankApi/update
+Body: {
+  "id": "639e04fdf2bfb269f5b75484",
+  "isActive": "false"
+}
+
+
 // delete an account
 DELETE https://bankapi-2-wa.onrender.com/BankApi/delete
 Body:   {

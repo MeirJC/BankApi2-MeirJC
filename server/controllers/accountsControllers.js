@@ -40,6 +40,26 @@ export const addAccount = async (req, res) => {
     res.status(418).send(err);
   }
 };
+//! update account by id
+export const updateAccount = async (req, res) => {
+  const { body } = req;
+  try {
+    const updatedAccount = await Account.findOneAndUpdate(
+      { _id: body.id },
+      { $set: body }
+    );
+    if (!updatedAccount) {
+      return res.status(404).send(`Account ${id} not found`);
+    }
+    await res.status(201).send("Account updated!");
+  } catch (err) {
+    console.log(
+      "--Error in updateAccount in accountsController.js--",
+      err.message
+    );
+    res.status(418).send(err);
+  }
+};
 //! get account by id
 export const getAccountById = async (req, res) => {
   const { id } = req.body;
@@ -60,14 +80,12 @@ export const getAccountById = async (req, res) => {
 //! make remove account by id in request body
 export const deleteAccount = async (req, res) => {
   const { id } = req.body;
-  console.log("ID!", id);
   try {
     const deletedAccount = await Account.findOneAndDelete({ _id: id });
     if (!deletedAccount) {
       return res.status(404).send(`Account ${id} not found`);
     }
-    console.log("deletedAccount", deletedAccount);
-    res.status(200).send(deletedAccount);
+    res.status(200).send(`Account ${id} was deleted`);
   } catch (err) {
     console.log(
       "--Error in deleteAccount in accountsController.js--",
@@ -80,6 +98,10 @@ export const deleteAccount = async (req, res) => {
 export const depositToAccount = async (req, res) => {
   const { id, amount } = req.body;
   try {
+    const isItActive = await Account.findById(id);
+    if (isItActive.isActive === false) {
+      return res.status(404).send(`AAccount ${id} is not active`);
+    }
     const depositAccount = await Account.findOneAndUpdate(
       { _id: id },
       { $inc: { balance: amount } }
@@ -106,6 +128,10 @@ export const withdrawFromAccount = async (req, res) => {
   const { id, amount } = req.body;
   const account = await Account.findOne({ _id: id });
   try {
+    const isItActive = await Account.findById(id);
+    if (isItActive.isActive === false) {
+      return res.status(404).send(`AAccount ${id} is not active`);
+    }
     if (amount > account.credit + account.balance) {
       return res.status(404).send(`Not Enough Credit!`);
     }
@@ -139,6 +165,9 @@ export const transferFromAccount = async (req, res) => {
     return res
       .status(404)
       .send(`Account ${senderId} or ${receiverId} not found`);
+  }
+  if (senderAccount.isActive === false || receiverAccount.isActive === false) {
+    return res.status(404).send(`One of the accounts is not active`);
   }
   try {
     if (amount > senderAccount.credit + senderAccount.balance) {
